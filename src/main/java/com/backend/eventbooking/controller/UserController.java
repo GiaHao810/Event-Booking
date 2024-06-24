@@ -1,9 +1,10 @@
 package com.backend.eventbooking.controller;
 
-import com.backend.eventbooking.modelDTO.AuthenticationRequest;
-import com.backend.eventbooking.modelDTO.RegisterRequest;
-import com.backend.eventbooking.modelDTO.Response;
-import com.backend.eventbooking.model.ResponseObject;
+import com.backend.eventbooking.dto.request.AuthenticationRequest;
+import com.backend.eventbooking.dto.request.RegisterRequest;
+import com.backend.eventbooking.dto.Response;
+import com.backend.eventbooking.dto.response.ResponseObject;
+import com.backend.eventbooking.dto.response.SuccessAuthenticationResponse;
 import com.backend.eventbooking.model.User;
 import com.backend.eventbooking.service.AuthenticationService;
 import com.backend.eventbooking.service.repo.UserRepoService;
@@ -25,32 +26,29 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/")
-    public ResponseEntity<ResponseObject> getAllUser(){
-        List<User> userList = userRepoService.getAllUser();
-
+    public ResponseEntity<Response> getAllUser() {
         return ResponseEntity.ok(
-                new ResponseObject("OK", "OK", userList)
+                new ResponseObject("OK",
+                        "OK",
+                        userRepoService.getAllUser())
         );
     }
+
     @PostMapping("/add")
-    public ResponseEntity<ResponseObject> addUser(@RequestBody RegisterRequest registerRequest){
-        Response response = authenticationService.register(registerRequest);
-
-        log.info(response.toString());
-
+    public ResponseEntity<Response> addUser(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(
-                new ResponseObject("Created", "OK", response)
+                new ResponseObject("Created",
+                        "OK",
+                        authenticationService.register(registerRequest))
         );
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<ResponseObject> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
-        Response response = authenticationService.authenticate(authenticationRequest);
-
-        log.info(response.toString());
-
+    public ResponseEntity<Response> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(
-                new ResponseObject("OK", "OK", response)
+                new ResponseObject("OK",
+                        "OK",
+                        authenticationService.authenticate(authenticationRequest))
         );
     }
 }

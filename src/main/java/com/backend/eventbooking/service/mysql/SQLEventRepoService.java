@@ -1,7 +1,7 @@
 package com.backend.eventbooking.service.mysql;
 
 import com.backend.eventbooking.model.Event;
-import com.backend.eventbooking.model.ResponseObject;
+import com.backend.eventbooking.dto.response.ResponseObject;
 import com.backend.eventbooking.repository.EventRepository;
 import com.backend.eventbooking.service.repo.EventRepoService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class SQLEventRepoService implements EventRepoService {
 
     @Override
     public void saveEvent(Event event) {
-        if(checkEvent(event).status().equals("TRUE")) eventRepository.save(event);
+        if (checkEvent(event).getStatus().equals("TRUE")) eventRepository.save(event);
     }
 
     @Override
@@ -25,14 +25,14 @@ public class SQLEventRepoService implements EventRepoService {
         return eventRepository.findAll();
     }
 
-    public ResponseObject checkEvent(Event event){
+    public ResponseObject checkEvent(Event event) {
         return (
                 event.getHeader().isBlank()
-                || event.getDescription().isBlank()
-                || event.getStartDate().toString().isBlank()
-                || event.getEndDate().toString().isBlank()
+                        || event.getDescription().isBlank()
+                        || event.getStartDate().toString().isBlank()
+                        || event.getEndDate().toString().isBlank()
         )
-                ? new ResponseObject("EVENT INVALID","FALSE", null)
+                ? new ResponseObject("EVENT INVALID", "FALSE", null)
                 : new ResponseObject("EVENT VALID", "TRUE", event);
     }
 }

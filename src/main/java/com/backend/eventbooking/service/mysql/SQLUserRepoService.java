@@ -1,6 +1,6 @@
 package com.backend.eventbooking.service.mysql;
 
-import com.backend.eventbooking.model.ResponseObject;
+import com.backend.eventbooking.dto.response.ResponseObject;
 import com.backend.eventbooking.model.User;
 import com.backend.eventbooking.repository.UserRepository;
 import com.backend.eventbooking.service.repo.UserRepoService;
@@ -9,11 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class SQLUserRepoService implements UserRepoService {
 
     @Override
     public void saveUser(User user) {
-        if(checkUser(user).status().equals("TRUE")) userRepository.save(user);
+        if(checkUser(user).getStatus().equals("TRUE")) userRepository.save(user);
     }
 
     @Override

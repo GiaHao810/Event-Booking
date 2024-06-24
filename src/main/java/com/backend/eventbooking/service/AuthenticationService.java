@@ -1,6 +1,10 @@
 package com.backend.eventbooking.service;
 
-import com.backend.eventbooking.modelDTO.*;
+import com.backend.eventbooking.dto.*;
+import com.backend.eventbooking.dto.request.AuthenticationRequest;
+import com.backend.eventbooking.dto.request.RegisterRequest;
+import com.backend.eventbooking.dto.response.FailAuthenticationResponse;
+import com.backend.eventbooking.dto.response.SuccessAuthenticationResponse;
 import com.backend.eventbooking.model.Role;
 import com.backend.eventbooking.model.User;
 import com.backend.eventbooking.service.repo.UserRepoService;
@@ -41,10 +45,10 @@ public class AuthenticationService {
 
         var jwtToken = jwtService.generateToken(user);
 
-        return SuccessAuthenticationResponse.builder()
-                .token(jwtToken)
-                .expiresAt(jwtService.getExpirationTime())
-                .build();
+        return new SuccessAuthenticationResponse(
+                jwtToken,
+                jwtService.getExpirationTime()
+        );
     }
 
     public Response authenticate(AuthenticationRequest authenticationRequest) {
@@ -55,13 +59,15 @@ public class AuthenticationService {
                             authenticationRequest.password()
                     )
             );
-        } catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
 
             logger.error(e.getMessage());
 
-            return FailAuthenticationResponse.builder()
-                    .message(e.getMessage())
-                    .build();
+            return new FailAuthenticationResponse(
+                    e.getMessage(),
+                    "FAILED",
+                    authenticationRequest
+            );
         }
 
         var jwtToken = jwtService.generateToken(
@@ -69,9 +75,9 @@ public class AuthenticationService {
                         .orElseThrow()
         );
 
-        return SuccessAuthenticationResponse.builder()
-                .token(jwtToken)
-                .expiresAt(jwtService.getExpirationTime())
-                .build();
+        return new SuccessAuthenticationResponse(
+                jwtToken,
+                jwtService.getExpirationTime()
+        );
     }
 }

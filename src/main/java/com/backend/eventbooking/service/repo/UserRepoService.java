@@ -1,6 +1,6 @@
 package com.backend.eventbooking.service.repo;
 
-import com.backend.eventbooking.model.ResponseObject;
+import com.backend.eventbooking.dto.response.ResponseObject;
 import com.backend.eventbooking.model.User;
 import org.springframework.stereotype.Service;
 

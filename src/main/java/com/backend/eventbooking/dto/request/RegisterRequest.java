@@ -1,4 +1,4 @@
-package com.backend.eventbooking.modelDTO;
+package com.backend.eventbooking.dto.request;
 
 import lombok.Builder;
 
